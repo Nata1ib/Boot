@@ -28,16 +28,18 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return botUsername;
+        return "@bg_weather_bot";
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        var sm = sendMessageService.send(update.getMessage());
-        try {
-            this.execute(sm);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            var sm = sendMessageService.send(update.getMessage());
+            try {
+                this.execute(sm);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

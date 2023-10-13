@@ -24,9 +24,17 @@ public class SendMessageServiceImp implements SendMessageService {
 
     @Override
     public SendMessage send(Message message) {
-        String result = "/start".equals(message.getText())
-                ? messageSource.getMessage("greeting", null, Locale.ENGLISH)
-                : openWeatherMapService.getWeatherInfo(message.getText());
+        String result;
+
+        if ("/start".equals(message.getText())) {
+            result = messageSource.getMessage("greeting", null, Locale.ENGLISH);
+        } else if (message.hasLocation()) {
+            double latitude = message.getLocation().getLatitude();
+            double longitude = message.getLocation().getLongitude();
+            result = openWeatherMapService.getWeatherInfoByLocation(latitude, longitude);
+        } else {
+            result = openWeatherMapService.getWeatherInfo(message.getText());
+        }
 
         return SendMessage.builder()
                 .text(result)
