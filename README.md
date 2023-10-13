@@ -18,11 +18,8 @@
 ## Выполненные задачи
 - [X] Set location
 - [X] Show current weather (now)
+- [X]  Update location
 
-> [!NOTE]
-> Update location
-> 
-> Представлен код, но правильности исполнения не удалось представить в работе телеграмм-канала.
 
 ## Используемые технологии
 - Java 17
@@ -103,8 +100,14 @@
    <img src="https://github.com/poolins/weatherBot/blob/04d147db39bcffd8f05fbc143e15345e6c738a5f/WorkingOfBot1%5C.jpeg" width="200">
 </picture>
 
-
 <picture>
    <img src="https://github.com/poolins/weatherBot/blob/04d147db39bcffd8f05fbc143e15345e6c738a5f/WorkingOfBot2.jpeg" width="200">
 </picture>
+
+
+
+<picture>
+   <img src="https://github.com/poolins/weatherBot/blob/2eb5ca0e86fe548a9125cf9345926aa206c3c41d/photo_2023-10-14%2000.34.26.jpeg" width="200">
+</picture>
+
 </p>
