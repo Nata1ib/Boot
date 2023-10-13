@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Locale;
@@ -29,9 +30,10 @@ public class SendMessageServiceImp implements SendMessageService {
         if ("/start".equals(message.getText())) {
             result = messageSource.getMessage("greeting", null, Locale.ENGLISH);
         } else if (message.hasLocation()) {
-            double latitude = message.getLocation().getLatitude();
-            double longitude = message.getLocation().getLongitude();
-            result = openWeatherMapService.getWeatherInfoByLocation(latitude, longitude);
+            Location location = message.getLocation();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            result = openWeatherMapService.getWeatherInfoByLocation(longitude, latitude);
         } else {
             result = openWeatherMapService.getWeatherInfo(message.getText());
         }

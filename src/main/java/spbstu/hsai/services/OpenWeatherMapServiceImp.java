@@ -1,23 +1,19 @@
 package spbstu.hsai.services;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import com.fasterxml.jackson.databind.JsonNode;
 import spbstu.hsai.weatherElements.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -49,30 +45,39 @@ public class OpenWeatherMapServiceImp implements OpenWeatherMapService {
         }
     }
 
-    public String YandexMapsXMLParser(String xmlData) {
-        String cityName = null;
+    public String YandexMapsJSONParser(String url) {
+        String name = null;
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(xmlData));
-            Document document = builder.parse(is);
+            HttpClient httpClient = HttpClient.newHttpClient();
 
-            Element root = document.getDocumentElement();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
 
-            //получение значения из тега <name>
-            NodeList nameList = root.getElementsByTagName("name");
-            if (nameList.getLength() > 0) {
-                cityName = nameList.item(0).getTextContent();
-            }
-        } catch (ParserConfigurationException | SAXException | IOException e) {
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            String jsonString = httpResponse.body();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonString);
+
+            JsonNode geoObjectNode = rootNode
+                    .path("response")
+                    .path("GeoObjectCollection")
+                    .path("featureMember")
+                    .get(0)
+                    .path("GeoObject");
+
+            name = geoObjectNode.path("name").asText();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return cityName;
+        return name;
     }
 
     public String getWeatherInfoByLocation(double latitude, double longitude) {
         String s = String.format("https://geocode-maps.yandex.ru/1.x?format=json&lang=en_US&kind=locality&geocode=%s,%s&apikey=%s", latitude, longitude, yandexId);
-        String city = YandexMapsXMLParser(s);
+        String city = YandexMapsJSONParser(s);
         try {
             return createString(getResponse(city));
         } catch (FileNotFoundException e) {

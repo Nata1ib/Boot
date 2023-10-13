@@ -33,7 +33,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage()) {
             var sm = sendMessageService.send(update.getMessage());
             try {
                 this.execute(sm);
