@@ -16,9 +16,9 @@
 > 5. Schedule
 >  - Show every
 ## Выполненные задачи
-- [X] Set location
+- [X] Set location - City
+- [X] Set location - Geomarker
 - [X] Show current weather (now)
-- [X]  Update location
 
 
 ## Используемые технологии
