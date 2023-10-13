@@ -16,7 +16,6 @@
 > 5. Schedule
 >  - Show every
 ## Выполненные задачи
-- [X] Sign in
 - [X] Set location
 - [X] Show current weather (now)
 
