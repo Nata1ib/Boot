@@ -49,6 +49,13 @@
                          <mainClass>spbstu.hsai.WeatherBotApplication</mainClass>   
                          <layout>JAR</layout>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
