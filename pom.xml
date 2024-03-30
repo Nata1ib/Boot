@@ -45,12 +45,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                         <archive>
-                                  <manifest>
-                                           <addClasspath>true</addClasspath>
-                                           <mainClass>spbstu.hsai.WeatherBotApplication</mainClass>
-                                  </manifest>
-                         </archive>
+                         <mainClass>spbstu.hsai.WeatherBotApplication</mainClass>   
                 </configuration>
             </plugin>
         </plugins>
